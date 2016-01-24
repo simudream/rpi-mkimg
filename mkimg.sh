@@ -15,9 +15,9 @@ if [ "${outfile}" == "" ]; then
 fi;
 
 # sanity checks on the partition layout
-fdisk -l ${device} | grep -q '/dev/sdb1.*W95 FAT32'
+fdisk -l ${device} | grep -q '/dev/sdb1.*W95 FAT16'
 if [ "$?" != "0" ]; then
-    echo 'The first partition is expected to be FAT32' 1>&1;
+    echo 'The first partition is expected to be FAT16' 1>&1;
     exit 1;
 fi;
 
