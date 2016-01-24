@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 device=$1
 outfile=$2
 
