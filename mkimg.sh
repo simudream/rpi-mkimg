@@ -5,7 +5,7 @@ outfile=$2
 
 # sanity checks on the command line parameters
 if [ "${device}" == "" ]; then
-    echo "Please specify device, e.g. $0 /dev/sda <filename>" 1>&2;
+    echo "Please specify device, e.g. $0 /dev/sdb <filename>" 1>&2;
     exit 1;
 fi;
 
@@ -15,13 +15,13 @@ if [ "${outfile}" == "" ]; then
 fi;
 
 # sanity checks on the partition layout
-fdisk -l ${device} | grep -q '/dev/sda1.*W95 FAT32'
+fdisk -l ${device} | grep -q '/dev/sdb1.*W95 FAT32'
 if [ "$?" != "0" ]; then
     echo 'The first partition is expected to be FAT32' 1>&1;
     exit 1;
 fi;
 
-fdisk -l ${device} | grep -q '/dev/sda2.*Linux'
+fdisk -l ${device} | grep -q '/dev/sdb2.*Linux'
 if [ "$?" != "0" ]; then
     echo 'The second partition is expected to be Linux' 1>&1;
     exit 1;
@@ -65,7 +65,7 @@ let megs_rounded=`convert_bytes ${bytes}`
 parted --align optimal ${device} unit MB resizepart 2 ${megs_rounded} yes
 
 # use last value in the `End` column to know how much to image
-let total_bytes=`parted /dev/sda unit B print | grep -v '^$' | awk '{print $3}' | tail -n 1 | sed -e 's/B//'`;
+let total_bytes=`parted /dev/sdb unit B print | grep -v '^$' | awk '{print $3}' | tail -n 1 | sed -e 's/B//'`;
 let total_megs_rounded=`convert_bytes ${total_bytes}`
 
 # generate a zip file on the fly
